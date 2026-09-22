@@ -1,36 +1,46 @@
 ---
 name: ai-infra-learning-note
-description: Create learning-oriented AI infrastructure notes organized by cognitive dependency. Use for explanations of distributed training, RL systems, inference systems, model architecture, operators, performance optimization, and adjacent AI Infra topics where the goal is durable understanding rather than exhaustive reference coverage.
+description: Create learning-oriented AI infrastructure notes that help the reader build a clear conceptual model before diving into implementation details. Use for distributed training, RL systems, inference, model architecture, operators, and adjacent AI Infra topics.
 ---
 
 # AI Infra Learning Note
 
-Create technical learning notes that follow the reader's cognitive path instead of dumping every related fact into one document.
+Create technical learning notes that prioritize conceptual clarity over completeness.
+
+The goal is to help the reader answer:
+
+- What problem is this concept solving?
+- Why does it need to exist?
+- What is the simplest useful mental model?
+- How does the core mechanism work?
+- How does it connect to concepts the reader already knows?
+
+Do not turn every learning note into a system design document.
 
 ## Core principle
 
-Optimize for understanding, not completeness.
-
-Every concept must justify why it appears at that point in the document.
+Optimize for understanding, not coverage.
 
 Prefer:
 
-Problem -> Motivation -> Mental Model -> Mechanism -> Example -> Implementation -> Trade-offs -> Advanced Topics -> References
+Problem -> Motivation -> Mental Model -> Core Mechanism -> Minimal Example -> Summary
 
 over:
 
-Definition A -> Definition B -> API list -> random implementation details -> edge cases.
+Definition A -> Definition B -> API list -> implementation details -> optimizations -> edge cases.
+
+Implementation, trade-offs, formal derivations, and optimization details are optional. Include them only when they materially improve understanding or the user explicitly asks for them.
 
 ## Reader model
 
-Before drafting, infer or state:
+Before writing, determine:
 
 - what the reader already knows;
 - what the reader does not know;
-- what the reader is trying to understand or build;
-- what prior concepts are required.
+- what they are trying to understand;
+- which prerequisite concepts are actually necessary.
 
-Do not use "beginner" or "advanced" as a substitute for an actual reader model.
+Do not use vague labels like "beginner" or "advanced" as a substitute for a real reader model.
 
 ## Planning workflow
 
@@ -40,29 +50,32 @@ Before writing the main content, internally establish:
 2. Problem Chain
 3. Concept Dependency
 4. Mental Model
-5. Mechanism
+5. Core Mechanism
 6. Minimal Example
-7. Real Implementation
-8. Trade-offs / Optimization
-9. Reference Material
+7. Summary
 
-The final document does not need to expose these labels literally, but its structure should reflect them.
+Optional extensions:
+
+- Formal Model
+- Real Implementation
+- Trade-offs / Optimization
+- References
+
+The final document does not need to expose this planning structure literally.
 
 ## Default narrative structure
 
-Use this structure unless the topic strongly suggests otherwise.
-
 ### 1. Problem
 
-Start from a concrete technical limitation, failure mode, scaling pressure, or engineering question.
+Start from a concrete question, limitation, contradiction, or engineering pressure.
 
-Explain what becomes difficult before introducing the mechanism that solves it.
+Explain what becomes difficult before introducing the concept that solves it.
 
 ### 2. Motivation
 
-Explain why the problem matters in practice.
+Explain why the concept matters.
 
-Prefer concrete system consequences such as memory usage, communication overhead, throughput, latency, synchronization, correctness, or implementation complexity.
+Keep this close to the reader's goal. Avoid turning motivation into a survey of every possible use case.
 
 ### 3. Mental Model
 
@@ -70,150 +83,126 @@ Build the smallest useful intuitive model.
 
 At this stage:
 
-- avoid unnecessary terminology;
-- ignore secondary details;
-- state simplifications explicitly;
-- use diagrams, data-flow descriptions, or small tables when they improve understanding.
+- minimize terminology;
+- state simplifications clearly;
+- avoid implementation-specific names unless needed;
+- use simple diagrams, data flow, tensor shapes, or small examples when helpful.
 
-The reader should be able to explain the idea informally before seeing the full implementation.
+The reader should be able to explain the idea informally before seeing detailed mechanics.
 
-### 4. Minimal Mechanism
+### 4. Core Mechanism
 
-Show the smallest mechanism that makes the idea work.
+Explain how the concept works at the minimum level needed for understanding.
 
-Explain:
+Focus on:
 
-- what state exists;
-- where data moves;
-- which component owns each responsibility;
-- when synchronization or transformation occurs.
+- what entities exist;
+- how they relate;
+- what data or information flows between them;
+- what changes over time;
+- what invariant or rule makes the mechanism work.
 
 Introduce terminology only when the reader now has a reason to need it.
 
-### 5. Formal Model
+### 5. Minimal Example
 
-Add mathematical definitions, invariants, complexity, tensor shapes, communication volume, or other formal detail when useful.
+Use the smallest example that makes the concept concrete.
 
-Do not introduce mathematics merely to make the document look rigorous.
+Prefer:
 
-Each formula should answer a concrete question raised by the earlier mental model.
+- tiny tensors;
+- 2-4 processes or devices;
+- short pseudocode;
+- minimal Python / PyTorch snippets;
+- small numerical examples.
 
-### 6. Minimal Example
+The example should validate the mental model, not showcase an API surface.
 
-Prefer a minimal executable Python, PyTorch, or pseudocode example over a large production-style example.
+### 6. Summary
 
-The example should validate the mental model, not demonstrate every available API.
+End by compressing the concept into a small number of durable ideas.
 
-Explain the important state transitions and tensor/data shapes.
+A good summary should answer:
 
-### 7. Real Implementation
+- what problem this concept solves;
+- what the key mechanism is;
+- what the reader should remember;
+- what concept naturally comes next.
 
-Map the conceptual model onto a real framework or codebase.
+## Optional extensions
 
-For AI Infra topics, this may include:
+These are not part of the default path.
 
-- PyTorch;
-- NCCL;
-- Megatron-LM;
-- vLLM;
-- SGLang;
-- verl;
-- Slime;
-- Ray;
-- CUDA / Triton;
-- framework source code.
+### Formal Model
 
-Keep conceptual names and implementation names visibly connected.
+Add formulas, complexity, invariants, communication volume, or tensor algebra only when they clarify the concept.
 
-### 8. Trade-offs
+Every formula should answer a concrete question.
 
-Explain why the system is designed this way instead of only explaining how it works.
+### Real Implementation
 
-Cover relevant dimensions such as:
+Map the concept onto PyTorch, NCCL, Megatron-LM, vLLM, SGLang, verl, CUDA, Triton, or another real codebase only when implementation knowledge is useful to the user's goal.
 
-- compute;
-- memory;
-- communication;
-- latency;
-- throughput;
-- implementation complexity;
-- fault tolerance;
-- scalability.
+Do not let framework details replace the conceptual explanation.
 
-Avoid generic "pros and cons" lists. Tie each trade-off to the mechanism previously explained.
+### Trade-offs / Optimization
 
-### 9. Advanced Topics
+Discuss compute, memory, communication, latency, throughput, or scalability only after the baseline mechanism is clear.
 
-Place optimizations, variants, edge cases, historical details, and neighboring concepts here when they are not required for the main understanding path.
+Always establish the baseline before describing an optimization.
 
-Do not interrupt the main narrative merely because a related concept exists.
+### References
 
-### 10. References
+Add papers, docs, source files, or APIs when the user wants to continue deeper.
 
-Keep reference-style material separate from the teaching flow.
-
-Include useful items such as:
-
-- papers;
-- official documentation;
-- important source files;
-- relevant classes or functions;
-- terminology lookup;
-- follow-up reading.
+Keep reference material separate from the teaching flow.
 
 ## Cognitive dependency rules
 
-Follow these rules strictly.
-
 ### Explain why before what
 
-Before defining a mechanism, establish the problem that makes the mechanism necessary.
+Before defining a concept, establish the problem that makes it necessary.
 
 ### Do not use unexplained prerequisites
 
-If a section depends on a concept not yet introduced, either:
+If a section depends on a concept not yet introduced:
 
 1. introduce the prerequisite first; or
 2. defer the dependent section.
 
 ### One conceptual thread per section
 
-A section should answer one main question.
+Each section should answer one main question.
 
-Do not mix conceptual explanation, API reference, optimization trivia, and historical background unless the connection is essential.
+Do not mix concept explanation, API details, optimization trivia, and historical background unless the connection is essential.
 
 ### Progressive refinement
 
-Start from a simplified model and then progressively remove simplifications.
+Start from a simplified model and gradually remove simplifications.
 
-A good sequence often looks like:
+For example:
 
 single device
 -> multiple devices
--> synchronization requirement
--> collective communication
--> concrete algorithm
--> framework implementation
--> performance optimization
+-> need for coordination
+-> communication
+-> collective operation
 
-### Separate learning from reference
+Stop when the reader's current question has been answered.
 
-Teaching material should optimize for sequence.
-
-Reference material should optimize for lookup.
-
-Do not force both purposes into the same section.
+Do not continue into implementation or optimization merely because those topics exist.
 
 ## Writing style
 
 Prefer clear technical prose over encyclopedic coverage.
 
-Use headings that express questions or mechanisms rather than vague categories.
+Use headings that express questions or mechanisms.
 
 Prefer:
 
 - "Why do gradients need synchronization?"
-- "How does reduce-scatter change the communication pattern?"
+- "What does AllReduce actually guarantee?"
+- "Why does sequence packing help?"
 
 over:
 
@@ -221,64 +210,55 @@ over:
 - "Details"
 - "Other concepts"
 
-Use examples with realistic tensor shapes, process counts, memory sizes, or communication patterns when they materially clarify the concept.
+Use concrete examples when they improve understanding.
 
-Avoid unnecessary repetition.
-
-Avoid introducing multiple synonyms for the same concept unless the distinction matters.
+Avoid unnecessary terminology, repetition, and side quests.
 
 ## AI Infra-specific guidance
 
-For distributed systems topics, explicitly track:
+For distributed topics, track only the concepts needed to make the mechanism clear, such as:
 
-- process / worker identity;
-- device ownership;
+- process / worker;
+- device;
 - tensor placement;
-- communication direction;
-- synchronization points;
-- data-parallel, tensor-parallel, pipeline-parallel, or sequence-parallel boundaries when relevant.
+- communication;
+- synchronization.
 
-For model architecture topics, explicitly track:
+For model architecture topics, track:
 
-- input and output shapes;
-- parameterization;
-- intermediate representations;
+- input;
+- output;
+- intermediate representation;
 - information flow;
-- computational and memory complexity.
+- tensor shape when relevant.
 
-For RL / post-training systems, explicitly track:
+For RL / post-training topics, track conceptual roles such as:
 
-- rollout generation;
-- policy / reference / reward / value roles;
-- data ownership;
-- batching and packing;
-- synchronization between training and inference;
-- reward and advantage flow;
-- where gradients do and do not propagate.
+- rollout;
+- policy;
+- reference model;
+- reward;
+- advantage;
+- update.
 
-For optimization topics, always establish a baseline before presenting the optimization.
-
-Explain what resource the optimization saves and what new cost or constraint it introduces.
+Only introduce system-level details like scheduling, packing, parallelism, or runtime architecture when they are necessary to answer the current question.
 
 ## Cognitive dependency review
 
-After drafting, review every section.
+After drafting, review each section:
 
-Ask:
-
-- Why does the reader need this section now?
+- Why does the reader need this now?
 - Does it depend on an unexplained concept?
 - Does it advance the main problem chain?
-- Can it be moved later without hurting understanding?
-- Is it teaching material or reference material?
-- Did an implementation detail appear before the corresponding mental model?
+- Can it be removed or postponed without hurting understanding?
+- Did implementation detail appear before the concept was clear?
 
-If a section can move later without damaging comprehension, move it later.
+If a section can move later without damaging understanding, move it later.
 
-If a detail is useful but not required for the main path, move it to Advanced Topics or References.
+If a detail is useful but not required, omit it or place it under an optional extension.
 
 ## Output priority
 
-When there is tension between completeness and clarity, prefer clarity.
+When clarity and completeness conflict, prefer clarity.
 
-A shorter document with a coherent mental model is better than a complete document whose concepts appear in the wrong order.
+A short note that gives the reader a durable mental model is better than a comprehensive note that buries the concept.

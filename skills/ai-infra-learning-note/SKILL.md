@@ -214,35 +214,6 @@ Use concrete examples when they improve understanding.
 
 Avoid unnecessary terminology, repetition, and side quests.
 
-## AI Infra-specific guidance
-
-For distributed topics, track only the concepts needed to make the mechanism clear, such as:
-
-- process / worker;
-- device;
-- tensor placement;
-- communication;
-- synchronization.
-
-For model architecture topics, track:
-
-- input;
-- output;
-- intermediate representation;
-- information flow;
-- tensor shape when relevant.
-
-For RL / post-training topics, track conceptual roles such as:
-
-- rollout;
-- policy;
-- reference model;
-- reward;
-- advantage;
-- update.
-
-Only introduce system-level details like scheduling, packing, parallelism, or runtime architecture when they are necessary to answer the current question.
-
 ## Cognitive dependency review
 
 After drafting, review each section:

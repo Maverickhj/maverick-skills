@@ -81,20 +81,19 @@ Example:
 ```markdown
 # Mission
 
-Topic: PyTorch Distributed
+Topic: Linear Algebra
 
 Goal:
-Understand the distributed communication concepts needed before reading Megatron-LM.
+Build an intuitive understanding of the core concepts needed to understand linear transformations.
 
 Assumed knowledge:
-- Python
-- basic PyTorch
-- Transformer basics
+- basic arithmetic
+- simple equations
 
 Out of scope by default:
-- production deployment
-- exhaustive API reference
-- low-level NCCL implementation
+- numerical linear algebra
+- advanced proofs
+- production libraries
 ```
 
 Use the mission to reject content that is relevant to the topic but irrelevant to the reader's goal.
@@ -130,22 +129,18 @@ The map should identify:
 Example:
 
 ```text
-Distributed Training
-├── Process Model
-│   ├── process
-│   ├── rank
-│   └── process group
-├── Communication
-│   ├── point-to-point
-│   └── collectives
-│       ├── broadcast
-│       ├── all-reduce
-│       ├── all-gather
-│       └── reduce-scatter
-└── Parallelism
-    ├── data parallelism
-    ├── tensor parallelism
-    └── pipeline parallelism
+Linear Algebra
+├── Vectors
+│   ├── vector addition
+│   ├── scalar multiplication
+│   └── linear combination
+├── Matrices
+│   ├── matrix multiplication
+│   └── inverse
+└── Linear Systems
+    ├── Ax = b
+    ├── elimination
+    └── rank
 ```
 
 The map is not merely navigation.
@@ -162,17 +157,17 @@ A page should normally explain one concept, mechanism, distinction, or relations
 
 Prefer pages such as:
 
-- `all-reduce.md`
-- `process-group.md`
-- `data-parallelism.md`
+- `vectors.md`
+- `linear-combination.md`
+- `linear-independence.md`
 
 over pages such as:
 
-- `distributed-training-part-3.md`
+- `linear-algebra-part-3.md`
 - `misc-notes.md`
 - `advanced-topics-2.md`
 
-Use the `ai-infra-learning-note` skill or an equivalent concept-first writing approach when writing an individual technical concept page.
+Use a concept-first writing approach when writing an individual concept page.
 
 ## Page metadata
 
@@ -182,14 +177,15 @@ Example:
 
 ```yaml
 ---
-title: AllReduce
-summary: Aggregate values across processes and return the result to every process.
+title: Linear Independence
+summary: Determine whether a set of vectors contains redundant directions.
 prerequisites:
-  - collective-communication
+  - vectors
+  - linear-combination
 related:
-  - reduce
-  - all-gather
-  - reduce-scatter
+  - span
+  - basis
+  - rank
 ---
 ```
 
@@ -235,12 +231,11 @@ For example:
 ```text
 Suggested path for first-time readers:
 
-Process
--> Rank
--> Process Group
--> Collective Communication
--> AllReduce
--> Data Parallelism
+Vectors
+-> Linear Combination
+-> Span
+-> Linear Independence
+-> Basis
 ```
 
 Different paths may exist for different goals.
@@ -248,8 +243,8 @@ Different paths may exist for different goals.
 For example:
 
 - conceptual foundation;
-- source-code reading;
-- performance optimization.
+- geometric intuition;
+- problem solving.
 
 Learning paths are views over the knowledge graph, not the primary storage structure.
 
@@ -276,10 +271,10 @@ Prefer:
 
 ```text
 Foundations
-Communication
-Parallelism
-Memory
-Runtime
+Vectors
+Matrices
+Linear Systems
+Transformations
 ```
 
 over:
